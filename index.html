@@ -365,8 +365,47 @@
 						</code>
 					</pre>
 					<p class="fragment">Type of <code>doubled</code> is <code>(Int) => Int</code>.
-					<br/>Behind the scene Scala transform this Type into a <code>Function2[Int, Int] object.</code></p>
+						<br />Behind the scene Scala transform this Type into a <code>Function2[Int, Int] object.</code>
+					</p>
 				</section>
+				<section>
+					<h3>Higher&dash;Ordered Function</h3>
+					<p>It means now we can pass functions to functions</p>
+					<pre>
+					<code data-trim class="scala fragment">
+						val doubled: (Int) => Int = (elem: Int) => elem*2
+						val salaries: List[Int] = List(10, 20, 30)
+						salaries.map(doubled) // List(20, 40, 60)
+					</code>
+				</pre>
+				</section>
+				<section>
+					<p>... and return functions from functions</p>
+					<pre>
+					<code data-trim class="scala fragment">
+						def sslBuilder(isSSL: Boolean): (String) => String = {
+							val schema = if (isSSL) "https://" else "http://"
+							(domain: String) => schema + domain
+						}
+						
+						def getUrl: (String) => String = sslBuilder(isSSL = true)
+						val url = getUrl("www.lego.com") // "https://www.lego.com"
+					</code>
+				</pre>
+				</section>
+				<section><p>But MOM, I don't want to pre-define functions to use them.<br/>
+				We can use anonymous functions</p>
+				<pre>
+				<code data-trim class="scala fragment" data-line-numbers="1-6|3|4-6|1-6">
+					val doubled: (Int) => Int = (elem: Int) => elem*2
+					val salaries: List[Int] = List(10, 20, 30)
+					salaries.map(doubled) 				// List(20, 40, 60)
+					salaries.map((i: Int) => i * 2) 	// List(20, 40, 60)
+					salaries.map(i => i * 2)			// List(20, 40, 60)
+					salaries.map(_ * 2)					// List(20, 40, 60)
+				</code>
+			</pre>
+			</section>
 			</section>
 		</div>
 	</div>
