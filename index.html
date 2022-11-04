@@ -431,6 +431,7 @@
 			val namesAgain = "Joel" :: "Chris" :: "Ed" :: Nil
 					</code>
 				</pre>
+                <aside class="notes">:+ and +:</aside>
             </section>
             <section>
                 <p>Add an element a list</p>
@@ -441,11 +442,11 @@
 			val c = List(-1, 0) ::: a   // List(-1, 0, 1, 2, 3)
 					</code>
 				</pre>
-				<p><code>::</code> prepend a element <br/><code>:::</code> prepend a list</p>
+                <p><code>::</code> prepend a element <br/><code>:::</code> prepend a list</p>
             </section>
-			<section>
-				<p><code>Common List Methods</code></p>
-				<pre>
+            <section>
+                <p><code>Common List Methods</code></p>
+                <pre>
 					<code data-trim class="scala">
 			val names = List("Antonio", "Jenny",
 						"Philip", "Oliver", "Soren", "Josephine")
@@ -457,10 +458,10 @@
 
 					</code>
 				</pre>
-			</section>
-			<section>
-				<p>HoF on Collections<small>One for all</small></p>
-				<pre>
+            </section>
+            <section>
+                <p>HoF on Collections<small>One for all</small></p>
+                <pre>
 					<code data-trim class="scala">
 			val names = List("Antonio", "Jenny",
 						"Philip", "Oliver", "Soren", "Josephine")
@@ -474,8 +475,103 @@
 			names.map(_.length).map(elem => List(elem-1, elem, elem+1)) // List(List(6, 7, 8), List(4, 5, 6), List(5, 6, 7), List(5, 6, 7), List(4, 5, 6), List(8, 9, 10))
 					</code>
 				</pre>
+                <aside class="notes"><code>names.scanLeft("")((b,a) => b + a.head.toString.toUpperCase)</code></aside>
+            </section>
+            <section>
+                <h3>Maps</h3>
+                <pre>
+					<code data-trim class="scala">
+			val states = Map(
+			  "it" -> "Italia",
+			  "dk" -> "Denmark"
+			)
+			for (k, v) <- states do println(s"key: $k, value: $v")
+			val moreStates = states + ("en" -> "England") // Map(it -> Italia, dk -> Denmark, en -> England)
+			val evenMore = moreStates ++ Seq("es" -> "Spain", "de" -> "Germany") // HashMap(de -> Germany, en -> England, es -> Spain, IT -> Italia, DK -> Denmark)
+			val removed = moreStates - "en" // Map(IT -> Italia, DK -> Denmark)
+					</code>
+				</pre>
+                <aside class="notes">Some Map, Filter and foreach.</aside>
+            </section>
+            <section>
+                <h3>Sets</h3>
+                <pre>
+					<code data-trim class="scala">
+			val emptyNums = Set[Int]()
+			val letters = Set('a', 'b', 'c', 'c')   // Set(a, b, c)
+			val moreLetters = letters + 'd' // Set(a, b, c, d)
+			letters intersect Set('b') // Set(b)
+					</code>
+				</pre>
+                <aside class="notes">Some Map, Filter and foreach.</aside>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>for comprehension</h3>
+                <p>It's a lightweight notation for expressing sequence comprehensions </p>
+                <p>Basic Syntax: <code class="scala">for (enumerators) <strong>yield</strong> e</code></p>
+            </section>
+            <section>
+                <p>Some examples</p>
+                <pre>
+					<code data-trim class="scala">
+	val chessBoard = for {
+		letter <- 'A' to 'H'
+		number <- 1 to 8
+	} yield s"$letter$number"
+
+	chessBoard.foreach(println)
+					</code>
+				</pre>
+            </section>
+            <section>
+				<pre>
+					<code data-trim class="scala">
+case class User(name: String, age: Int)
+
+val userBase = List(
+  User("Travis", 28),
+  User("Kelly", 33),
+  User("Jennifer", 44),
+  User("Dennis", 23))
+
+val twentySomethings =
+  for user <- userBase if user.age >=20 && user.age < 30
+  yield user.name  // i.e. add this to a list
+
+twentySomethings.foreach(println)  // prints Travis Dennis
+					</code>
+				</pre>
+            </section>
+            <section><h4>Important</h4>
+                <p>I know it sounds weird but <code><strong>for</strong> comprehension</code> is just <em>syntactic
+                    sugar</em> in Scala to a sequence of calls to one or more of the methods:</p>
+                <ul>
+                    <li>foreach</li>
+                    <li>map</li>
+                    <li>flatMap</li>
+                    <li>withFilter</li>
+
+                </ul>
+            </section>
+			<section>
+				<p>Sugar-free example</p>
+				<pre><code class="scala" data-trim>
+val chessBoard = for {
+	letter <- 'A' to 'H'
+	number <- 1 to 8
+} yield s"$letter$number"
+
+val deSugarIt =
+	('A' to 'H').flatMap(letter =>
+		(1 to 8)
+			.map(number => s"$letter$number")
+  )
+				</code></pre>
 			</section>
         </section>
+
     </div>
 </div>
 
@@ -492,6 +588,7 @@
         hash: true,
         slideNumber: "h/v",
         overview: true,
+        showNote: true,
         transition: 'fade',
         // Learn about plugins: https://revealjs.com/plugins/
         plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
