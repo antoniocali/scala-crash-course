@@ -653,9 +653,9 @@ val deSugarIt =
 					def hello: String = "☕"
 				Developer.hello // "☕"
 			</code> </pre>
-                <p>object keyword create a Singleton object, and all its methods will be static (i.e. accessible without instantiate)</p></section>
+                <p class="fragment">object keyword create a Singleton object, and all its methods will be static (i.e. accessible without instantiate)</p></section>
 			<section><p>A particular Singleton object in Scala is a Companion object</p>
-			<pre>
+			<pre class="fragment">
 				<code class="scala" data-trim>
 					class Person(val name: String):
 						val drink = Person.secretDrink
@@ -668,8 +668,8 @@ val deSugarIt =
 					val p = Person("Antonio") // no new keyword because apply method
 				</code>
 			</pre>
-			<p>Companion can access to private vals, vars and methods, and vice-versa</p>
-			<p>Special methods for Companion: <code>apply, unapply</code></p></section>
+			<p class="fragment">Companion can access to private vals, vars and methods, and vice-versa</p>
+			<p class="fragment">Special methods for Companion: <code>apply, unapply</code></p></section>
         </section>
     </div>
 </div>
