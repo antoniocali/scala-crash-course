@@ -46,9 +46,7 @@
 					<textarea data-template>
 					- Collections
 					- For Comprehensions
-					- Functions Currying
 					- OOP (Class vs Objects)
-					- Traits
 					- Option
 					- Try
 
@@ -555,9 +553,9 @@ twentySomethings.foreach(println)  // prints Travis Dennis
 
                 </ul>
             </section>
-			<section>
-				<p>Sugar-free example</p>
-				<pre><code class="scala" data-trim>
+            <section>
+                <p>Sugar-free example</p>
+                <pre><code class="scala" data-trim>
 val chessBoard = for {
 	letter <- 'A' to 'H'
 	number <- 1 to 8
@@ -569,9 +567,110 @@ val deSugarIt =
 			.map(number => s"$letter$number")
   )
 				</code></pre>
-			</section>
+            </section>
         </section>
-
+        <section>
+            <section><h2>OOP in Scala</h2>
+                <p class="fragment">And I OOP<small>sksk save the turtles</small></p>
+            </section>
+            <section>
+                <p>Create a class</p>
+                <pre>
+					<code class="scala" data-trim>
+	class Person // defined a type
+	class Person(name: String) // now has a Constructor
+	class Person(n: String) {
+      val name = n // and now has a body
+	}
+	class Person(val name: String) // parameter instance on constructor
+					</code>
+				</pre>
+            </section>
+            <section>
+                <p>Careful how you defined a class</p>
+                <pre>
+					<code class="scala" data-trim>
+	class Person(name: String) // parameters get lost
+	val p = new Person("Antonio") // instantiate it
+	p.name // Compile Error: value name cannot be accessed as a member of (p : Person)
+					</code>
+				</pre>
+                <p>Input params of constructors got lost if not saved</p>
+                <pre>
+					<code class="scala" data-trim>
+	class Person(n: String):
+      val name = n // and now has a body
+	val p = new Person("Antonio") // instantiate it
+	p.name // "Antonio"
+					</code>
+				</pre>
+                <p> Can be even shorter</p>
+                <pre>
+					<code class="scala" data-trim>
+	class Person(val name: String)
+	(new Person("Antonio")).name // "Antonio"
+					</code>
+				</pre>
+            </section>
+            <section><p>Methods of course..</p>
+                <pre><code class="scala" data-trim>
+				class Person(val name: String)
+					def hello: String = s"Hello, I'm $name"
+				(new Person("Antonio")).hello // "Hello, I'm Antonio"
+			</code></pre>
+            </section>
+            <section>
+                <p>But WHY do we use class?</p>
+                <ul>
+                    <li>Store information?</li>
+                    <li>Have Utils "functions"?</li>
+                    <li>Eat the rich</li>
+                </ul>
+            </section>
+            <section>
+                <p>A ready-made class for storing information are <code>case class</code></p>
+                <pre>
+					<code class="scala" data-trim data-line-numbers="1-4|1|2|3|1-4">
+						case class Person(name: String): // input params are val by default
+							def hello: String = "I'm a better $name" // can have methods
+						val p = Person("Antonio") // no new keyword
+						p.hello // I'm a better Antonio
+					</code>
+				</pre>
+                <p>case class automagically generate a lot of methods for us:<br/><code>toString, hashCode, equals,
+                    apply, unapply, ...</code></p>
+            </section>
+            <section><p>But Antonio-senpai (′ꈍωꈍ‵), what is the <code>object</code> keyword we use for our Main class?
+            </p>
+                <p class="fragment">(｡´-_-)☕ My baka-student, it's Singleton object</p>
+            </section>
+            <section><h3>class vs object</h3>
+                <pre><code class="scala" data-trim>
+				class Person:
+					def hello: String = "Hello"
+				(new Person()).hello // "Hello"
+				object Developer:
+					def hello: String = "☕"
+				Developer.hello // "☕"
+			</code> </pre>
+                <p>object keyword create a Singleton object, and all its methods will be static (i.e. accessible without instantiate)</p></section>
+			<section><p>A particular Singleton object in Scala is a Companion object</p>
+			<pre>
+				<code class="scala" data-trim>
+					class Person(val name: String):
+						val drink = Person.secretDrink
+					object Person:
+						private val secretDrink: String = "☕"
+						def hello: String = "Hello"
+						def apply(name: String): Person = new Person(name)
+					(new Person("Antonio")).drink // "☕"
+					Person.hello // method is static, so accessible without instantiate
+					val p = Person("Antonio") // no new keyword because apply method
+				</code>
+			</pre>
+			<p>Companion can access to private vals, vars and methods, and vice-versa</p>
+			<p>Special methods for Companion: <code>apply, unapply</code></p></section>
+        </section>
     </div>
 </div>
 
