@@ -653,9 +653,10 @@ val deSugarIt =
 					def hello: String = "☕"
 				Developer.hello // "☕"
 			</code> </pre>
-                <p class="fragment">object keyword create a Singleton object, and all its methods will be static (i.e. accessible without instantiate)</p></section>
-			<section><p>A particular Singleton object in Scala is a Companion object</p>
-			<pre class="fragment">
+                <p class="fragment">object keyword create a Singleton object, and all its methods will be static (i.e.
+                    accessible without instantiate)</p></section>
+            <section><p>A particular Singleton object in Scala is a Companion object</p>
+                <pre class="fragment">
 				<code class="scala" data-trim>
 					class Person(val name: String):
 						val drink = Person.secretDrink
@@ -668,9 +669,72 @@ val deSugarIt =
 					val p = Person("Antonio") // no new keyword because apply method
 				</code>
 			</pre>
-			<p class="fragment">Companion can access to private vals, vars and methods, and vice-versa</p>
-			<p class="fragment">Special methods for Companion: <code>apply, unapply</code></p></section>
+                <p class="fragment">Companion can access to private vals, vars and methods, and vice-versa</p>
+                <p class="fragment">Special methods for Companion: <code>apply, unapply</code></p></section>
         </section>
+        <section>
+            <section>
+                <h3>Inheritance</h3>
+                <p>Parents, Childs.. Meh, I really don't want a family</p>
+            </section>
+            <section>
+                <p>In Scala everything extends <code>Any</code> automatically.</p>
+                <p>But we can create our own Family</p>
+                <pre><code class="scala" data-trim>
+					class Person
+					class Developer extends Person
+					def hello(p: Person) = "hello"
+					hello(new Person) // hello
+					hello(new Developer) // hello
+				</code></pre>
+            </section>
+            <section>
+                <p>We can have abstract classes</p>
+                <pre><code class="scala" data-trim>
+					abstract class Language:
+						def helloWorld: String
+
+					class Scala extends Language:
+						def helloWorld: String = "Scala says hello"
+					(new Language).helloWorld // compile error (Language is abstract; it cannot be instantiated)
+					(new Scala).helloWorld // hello
+				</code></pre>
+            </section>
+            <section>
+                <p>Diamond problem?</p>
+                <pre><code class="scala" data-trim>
+					class Language
+					class Python extends Language
+					class Scala extends Language
+					class DPELanguage extends Python, Scala // Not Possible
+				</code>
+				</pre>
+                <p>A class can extends only ONE class</p>
+            </section>
+			<section>
+				<h3>Traits</h3>
+				<p>sometimes we are interested in "Behaviour"</p>
+				<pre><code class="scala" data-trim>
+					abstract class Language:
+						val name: String
+					trait Speakable:
+						def speak: String
+					class Python extends Language:
+						val name = "Python"
+					class Scala extends Language with Speakable:
+						val name = "Scala"
+						def speak = name
+
+					def sayHello(s: Speakable): String =
+						s"Hello I'm ${s.speak}"
+					sayHello(new Scala) // "Hello I'm Scala"
+					sayHello(new Python) // Found: Python, required: Speakable
+				</code>
+				</pre>
+				<p>A Class can extends as main Traits as it wants (<code>Trait Mix-ins</code>)</p>
+			</section>
+        </section>
+
     </div>
 </div>
 
