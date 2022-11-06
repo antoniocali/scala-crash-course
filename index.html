@@ -711,10 +711,10 @@ val deSugarIt =
 				</pre>
                 <p>A class can extends only ONE class</p>
             </section>
-			<section>
-				<h3>Traits</h3>
-				<p>sometimes we are interested in "Behaviour"</p>
-				<pre><code class="scala" data-trim>
+            <section>
+                <h3>Traits</h3>
+                <p>sometimes we are interested in "Behaviour"</p>
+                <pre><code class="scala" data-trim>
 					abstract class Language:
 						val name: String
 					trait Speakable:
@@ -731,7 +731,72 @@ val deSugarIt =
 					sayHello(new Python) // Found: Python, required: Speakable
 				</code>
 				</pre>
-				<p>A Class can extends as main Traits as it wants (<code>Trait Mix-ins</code>)</p>
+                <p>A Class can extends as main Traits as it wants (<code>Trait Mix-ins</code>)</p>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>Better than Nulls</h3>
+                <p>How to handle T̶̨̺͎̣̪͔̣͔̄͊͗̓̈́̌̚̚͠H̸̛͚̹̾̐̏̂̚͘ͅE̴̡̢̥̟̮̗̺͎̭͐̂͋̉́̾̂̽̕͝
+                    ̷̠̤͍̜̮̺̮̣̤̮͚́̏̊̑̋͑͋̾͊V̴̮͉̮̺͎͉̓̈̅̇̊̐̈́͗͜͜Ö̷̼͔́̍͑̽͂͋̄̃I̸͇̖̯̫̱͓̳͙̘̭̻͍̥̭͆͊͗̀̃̏̓͗͆̑͘͝ͅD̷̨̡͍͚̼̞̣̹̻̼͕̂̿́̀͗̑͋̄́͗̆͌̆͜</p>
+            </section>
+            <section>
+                <p><code>Option</code> is a more FP way to handle with possible Null values.</p>
+
+                <pre>
+				<code class="scala" data-trim>
+				sealed abstract class Option[+A]:
+					def isEmpty: Boolean
+					def get: A
+				final case class Some[+A](x: A) extends Option[A]:
+					def isEmpty = false
+					def get = x
+				case object None extends Option[Nothing]:
+					def isEmpty = true
+					def get = throw new NoSuchElementException("None.get")
+				</code>
+			</pre>
+            </section>
+            <section>
+                <p>Option admits only two implementation: Some and None</p>
+                <pre><code data-trim class="scala">
+				def makeInt(s: String): Option[Int] =
+					try
+						Some(Integer.parseInt(s.trim))
+					catch
+						case e: Exception => None
+
+				val a = makeInt("1")     // Some(1)
+				val b = makeInt("one")   // None
+				</code>
+
+				</pre>
+            </section>
+            <section><p>Patter match against it</p>
+                <pre>
+					<code class="scala" data-trim>
+						toInt(x) match {
+							case Some(i) => println(i)
+							case None => println("That didn't work.")
+						}
+					</code>
+			</pre>
+            </section>
+			<section><p>Use it automagically in the for (Monadic behavior)</p>
+				<pre>
+					<code class="scala" data-trim>
+					val y = for {
+						a <- toInt("1")
+						b <- toInt("2")
+						c <- toInt("3")
+					} yield a + b + c // Some(6)
+					val z = for {
+						a <- toInt("1")
+						b <- toInt("NotANumber")
+						c <- toInt("3")
+					} yield a + b + c // None
+					</code>
+			</pre>
 			</section>
         </section>
 
