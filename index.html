@@ -782,8 +782,8 @@ val deSugarIt =
 					</code>
 			</pre>
             </section>
-			<section><p>Use it automagically in the for (Monadic behavior)</p>
-				<pre>
+            <section><p>Use it automagically in the for (Monadic behavior)</p>
+                <pre>
 					<code class="scala" data-trim>
 					val y = for {
 						a <- toInt("1")
@@ -797,7 +797,42 @@ val deSugarIt =
 					} yield a + b + c // None
 					</code>
 			</pre>
-			</section>
+            </section>
+
+        </section>
+        <section>
+            <section><p>A better Functional <code>Try</code></p>
+                <p>As it was for Optional, in Try we have only two implemented Classes: <code>Success, Failure</code>
+                </p>
+                <pre>
+				<code class="scala" data-trim>
+			def toInt(s: String): Try[Int] = Try {
+				Integer.parseInt(s.trim)
+			}
+			toInt("1") // Success(1)
+			toInt("Boo") // Failure(java.lang.NumberFormatException: For input string: "Boo")
+				</code>
+			</pre>
+            </section>
+            <section>
+                <p>So an easier Patter Matching</p>
+                <pre>
+				<code class="scala" data-trim>
+toInt(x) match {
+    case Success(i) => println(i)
+    case Failure(s) => println(s"Failed. Reason: $s")
+}
+val y = for {
+    a <- toInt("1")
+    b <- toInt("2")
+} yield a + b // Success(3)
+val z = for {
+    a <- toInt("1")
+    b <- toInt("Boo")
+} yield a + b // Failure(java.lang.NumberFormatException: For input string: "Boo")
+				</code>
+			</pre>
+            </section>
         </section>
 
     </div>
