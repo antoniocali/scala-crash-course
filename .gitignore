@@ -113,3 +113,9 @@ out/
 log/*.log
 tmp/**
 .sass-cache
+
+.bsp
+.metals
+.vscode
+target
+project
